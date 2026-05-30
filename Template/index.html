@@ -654,7 +654,7 @@
       text-align: center;
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       position: relative;
-      overflow: hidden;
+      overflow: visible;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -684,6 +684,8 @@
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
+      overflow-wrap: break-word;
+      word-break: break-word;
     }
     
     .stat-label {
@@ -1195,6 +1197,11 @@
       /* Reduce section padding on mobile */
       .section {
         padding: 5rem 5%;
+      }
+
+      /* Stack stats grid to single column on narrow screens */
+      .stats-grid {
+        grid-template-columns: 1fr;
       }
 
       /* Reduce hero visual size */
