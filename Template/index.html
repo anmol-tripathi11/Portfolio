@@ -720,65 +720,40 @@
     }
     
     .skills-wrapper {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 1.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
     }
     
     .skill-item {
-      background: var(--bg2);
+      background: transparent;
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.3rem 1.6rem;
-      transition: all 0.3s;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      border-radius: 20px;
+      padding: 0.5rem 1.1rem;
+      display: inline-block;
+      transition: border-color 0.25s, background 0.25s;
     }
     
     .skill-item:hover {
-      border-color: var(--border2);
-      transform: translateY(-2px);
-    }
-    
-    .skill-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 0.8rem;
+      border-color: var(--accent);
+      background: rgba(59, 130, 246, 0.04);
     }
     
     .skill-name {
-      font-weight: 600;
-      font-size: 0.95rem;
-      display: flex;
+      font-weight: 500;
+      font-size: 0.82rem;
+      display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 6px;
+      color: var(--muted);
+    }
+    
+    .skill-name:hover {
       color: var(--text);
     }
     
     .skill-icon {
-      font-size: 1.25rem;
-    }
-    
-    .skill-pct {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      color: var(--accent);
-      font-weight: 600;
-    }
-    
-    .skill-bar {
-      height: 5px;
-      background: rgba(59, 130, 246, 0.08);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    
-    .skill-fill {
-      height: 100%;
-      width: 0;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      border-radius: 4px;
-      transition: width 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+      font-size: 1rem;
     }
 
     .projects-grid {
@@ -1187,6 +1162,56 @@
       .hero-visual { min-width: auto; }
       .about-links { justify-content: center; }
       .projects-grid { grid-template-columns: 1fr; }
+
+      /* === MOBILE PERFORMANCE OPTIMIZATIONS === */
+      /* Hide the heavy canvas particle system on mobile */
+      #bg-canvas { display: none !important; }
+
+      /* Reduce blob blur and disable their animation */
+      .blob {
+        filter: blur(80px);
+        animation: none !important;
+      }
+
+      /* Simplify reveal transitions to opacity-only (avoid transform compositing) */
+      .reveal-up, .reveal-left, .reveal-right {
+        transform: none !important;
+        transition: opacity 0.5s ease !important;
+      }
+      .reveal-up.visible, .reveal-left.visible, .reveal-right.visible {
+        transform: none !important;
+      }
+
+      /* Pause heavy hero viz animations on mobile */
+      .viz-ring, .viz-dot, .viz-bar, .viz-node, .viz-line, .viz-pulse, .viz-glow-bg {
+        animation: none !important;
+      }
+
+      /* Disable 3D tilt effect on cards for mobile */
+      .project-card, .stat-card, .cert-card {
+        transform: none !important;
+      }
+
+      /* Reduce section padding on mobile */
+      .section {
+        padding: 5rem 5%;
+      }
+
+      /* Reduce hero visual size */
+      .viz-container {
+        width: 260px;
+        height: 260px;
+      }
+    }
+
+    /* Also respect user preference for reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      #bg-canvas { display: none !important; }
     }
   </style>
 </head>
@@ -1346,25 +1371,13 @@
         <div class="skills-cat-title">🗄️ Core Database Systems & SQL</div>
         <div class="skills-wrapper">
           <div class="skill-item">
-            <div class="skill-top">
-              <div class="skill-name"><span class="skill-icon">🐬</span> SQL / MySQL Server</div>
-              <div class="skill-pct">88%</div>
-            </div>
-            <div class="skill-bar"><div class="skill-fill" data-percent="88"></div></div>
+            <div class="skill-name"><span class="skill-icon">🐬</span> SQL / MySQL Server</div>
           </div>
           <div class="skill-item">
-            <div class="skill-top">
-              <div class="skill-name"><span class="skill-icon">🧱</span> Relational Database Modeling</div>
-              <div class="skill-pct">82%</div>
-            </div>
-            <div class="skill-bar"><div class="skill-fill" data-percent="82"></div></div>
+            <div class="skill-name"><span class="skill-icon">🧱</span> Relational Database Modeling</div>
           </div>
           <div class="skill-item">
-            <div class="skill-top">
-              <div class="skill-name"><span class="skill-icon">⚙️</span> SQL Query Aggregation & Joins</div>
-              <div class="skill-pct">85%</div>
-            </div>
-            <div class="skill-bar"><div class="skill-fill" data-percent="85"></div></div>
+            <div class="skill-name"><span class="skill-icon">⚙️</span> SQL Query Aggregation & Joins</div>
           </div>
         </div>
       </div>
@@ -1373,25 +1386,13 @@
         <div class="skills-cat-title">📈 Analytics & Business Intelligence (BI)</div>
         <div class="skills-wrapper">
           <div class="skill-item">
-            <div class="skill-top">
-              <div class="skill-name"><span class="skill-icon">📊</span> Microsoft Power BI</div>
-              <div class="skill-pct">86%</div>
-            </div>
-            <div class="skill-bar"><div class="skill-fill" data-percent="86"></div></div>
+            <div class="skill-name"><span class="skill-icon">📊</span> Microsoft Power BI</div>
           </div>
           <div class="skill-item">
-            <div class="skill-top">
-              <div class="skill-name"><span class="skill-icon">📗</span> Advanced Excel (Pivot Tables, Charts)</div>
-              <div class="skill-pct">92%</div>
-            </div>
-            <div class="skill-bar"><div class="skill-fill" data-percent="92"></div></div>
+            <div class="skill-name"><span class="skill-icon">📗</span> Advanced Excel (Pivot Tables, Charts)</div>
           </div>
           <div class="skill-item">
-            <div class="skill-top">
-              <div class="skill-name"><span class="skill-icon">📐</span> Excel formulas & Power Query</div>
-              <div class="skill-pct">88%</div>
-            </div>
-            <div class="skill-bar"><div class="skill-fill" data-percent="88"></div></div>
+            <div class="skill-name"><span class="skill-icon">📐</span> Excel formulas & Power Query</div>
           </div>
         </div>
       </div>
@@ -1400,25 +1401,13 @@
         <div class="skills-cat-title">🛡️ Data Engineering & Methodologies</div>
         <div class="skills-wrapper">
           <div class="skill-item">
-            <div class="skill-top">
-              <div class="skill-name"><span class="skill-icon">🧼</span> Data Cleaning / Data Preprocessing</div>
-              <div class="skill-pct">84%</div>
-            </div>
-            <div class="skill-bar"><div class="skill-fill" data-percent="84"></div></div>
+            <div class="skill-name"><span class="skill-icon">🧼</span> Data Cleaning / Data Preprocessing</div>
           </div>
           <div class="skill-item">
-            <div class="skill-top">
-              <div class="skill-name"><span class="skill-icon">🎯</span> Business KPI Dashboarding</div>
-              <div class="skill-pct">86%</div>
-            </div>
-            <div class="skill-bar"><div class="skill-fill" data-percent="86"></div></div>
+            <div class="skill-name"><span class="skill-icon">🎯</span> Business KPI Dashboarding</div>
           </div>
           <div class="skill-item">
-            <div class="skill-top">
-              <div class="skill-name"><span class="skill-icon">🗣️</span> Technical Data Storytelling</div>
-              <div class="skill-pct">80%</div>
-            </div>
-            <div class="skill-bar"><div class="skill-fill" data-percent="80"></div></div>
+            <div class="skill-name"><span class="skill-icon">🗣️</span> Technical Data Storytelling</div>
           </div>
         </div>
       </div>
@@ -1701,10 +1690,6 @@
       if (e.isIntersecting) {
         e.target.classList.add('visible');
         
-        e.target.querySelectorAll('.skill-fill').forEach(b => {
-          b.style.width = b.dataset.percent + '%';
-        });
-        
         e.target.querySelectorAll('.stat-num[data-target]').forEach(animateNum);
         
         observer.unobserve(e.target);
@@ -1733,85 +1718,93 @@
     }, 45);
   }
 
+  // === CANVAS PARTICLE SYSTEM (disabled on mobile for performance) ===
   const canvas = document.getElementById('bg-canvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, pts = [];
+  const isMobile = window.innerWidth <= 768;
 
-  function resize() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
-  resize();
-  window.addEventListener('resize', () => { resize(); init(); });
+  if (!isMobile && canvas) {
+    const ctx = canvas.getContext('2d');
+    let W, H, pts = [];
 
-  function init() {
-    pts = [];
-    const count = Math.floor(W * H / 18000);
-    for (let i = 0; i < count; i++) {
-      pts.push({
-        x: Math.random() * W, 
-        y: Math.random() * H,
-        vx: (Math.random() - 0.5) * 0.35,
-        vy: (Math.random() - 0.5) * 0.35,
-        r: Math.random() * 1.5 + 0.5
-      });
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
     }
-  }
-  init();
+    resize();
+    window.addEventListener('resize', () => { resize(); init(); });
 
-  let mx = -1000, my = -1000;
-  window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    pts.forEach(p => {
-      const dx = mx - p.x, dy = my - p.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 100) {
-        p.x += dx * 0.002;
-        p.y += dy * 0.002;
+    function init() {
+      pts = [];
+      const count = Math.floor(W * H / 18000);
+      for (let i = 0; i < count; i++) {
+        pts.push({
+          x: Math.random() * W, 
+          y: Math.random() * H,
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35,
+          r: Math.random() * 1.5 + 0.5
+        });
       }
-      p.x += p.vx; 
-      p.y += p.vy;
+    }
+    init();
+
+    let mx = -1000, my = -1000;
+    window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      pts.forEach(p => {
+        const dx = mx - p.x, dy = my - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 100) {
+          p.x += dx * 0.002;
+          p.y += dy * 0.002;
+        }
+        p.x += p.vx; 
+        p.y += p.vy;
+        
+        if (p.x < 0 || p.x > W) p.vx *= -1;
+        if (p.y < 0 || p.y > H) p.vy *= -1;
+        
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(59, 130, 246, 0.4)';
+        ctx.fill();
+      });
       
-      if (p.x < 0 || p.x > W) p.vx *= -1;
-      if (p.y < 0 || p.y > H) p.vy *= -1;
-      
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(59, 130, 246, 0.4)';
-      ctx.fill();
-    });
-    
-    for (let i = 0; i < pts.length; i++) {
-      for (let j = i + 1; j < pts.length; j++) {
-        const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
-        const d = Math.sqrt(dx * dx + dy * dy);
-        if (d < 120) {
-          ctx.beginPath();
-          ctx.moveTo(pts[i].x, pts[i].y);
-          ctx.lineTo(pts[j].x, pts[j].y);
-          ctx.strokeStyle = `rgba(59, 130, 246, ${0.08 * (1 - d / 120)})`;
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
+      for (let i = 0; i < pts.length; i++) {
+        for (let j = i + 1; j < pts.length; j++) {
+          const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < 120) {
+            ctx.beginPath();
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.strokeStyle = `rgba(59, 130, 246, ${0.08 * (1 - d / 120)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
         }
       }
+      requestAnimationFrame(draw);
     }
-    requestAnimationFrame(draw);
+    draw();
   }
-  draw();
 
-  document.querySelectorAll('.project-card, .stat-card, .cert-card').forEach(card => {
-    card.addEventListener('mousemove', e => {
-      const r = card.getBoundingClientRect();
-      const x = ((e.clientX - r.left) / r.width - 0.5) * 10;
-      const y = ((e.clientY - r.top) / r.height - 0.5) * -10;
-      card.style.transform = `perspective(800px) rotateX(${y}deg) rotateY(${x}deg)`;
+  // Only enable 3D tilt on non-touch/desktop devices
+  if (!isMobile) {
+    document.querySelectorAll('.project-card, .stat-card, .cert-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = ((e.clientX - r.left) / r.width - 0.5) * 10;
+        const y = ((e.clientY - r.top) / r.height - 0.5) * -10;
+        card.style.transform = `perspective(800px) rotateX(${y}deg) rotateY(${x}deg)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
     });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-    });
-  });
+  }
 
   </script>
 </body>
